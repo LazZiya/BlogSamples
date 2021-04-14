@@ -1,0 +1,48 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<alert></alert>
+
+<div class="row">
+    <div class="col">
+        <form method="post">
+            <div class="card box-shadow">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label asp-for="InputModel.Name"></label>
+                        <input asp-for="InputModel.Name" class="form-control" />
+                        <span asp-validation-for="InputModel.Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <!-- add hidden Token field -->
+                    <input type="hidden" asp-for="Token" />
+                    <button type="submit" class="btn btn-primary float-right">Submit</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="col">
+        <div class="bg-light mt-3 p-3 rounded border border-secondary">
+            To make sure the reCAPTCHA service is running you should see this logo at the bottom right corner of the page: <img src="~/Images/reCAPTCHA.PNG" />.<br />
+            See <a href="https://docs.ziyad.info/en/Miscellaneous/v1.0/google-recaptcha-v3.md">the docs</a> for setup instructions.
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <!-- Google ReCAPTCHA.V3-->
+    <script src="https://www.google.com/recaptcha/api.js?render=@Model.SiteKey"></script>
+    <script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('@Model.SiteKey', { action: 'homepage' }).then(function (token) {
+            document.getElementById("Token").value = token;
+        });
+    });
+    </script>
+}
